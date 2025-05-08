@@ -1,0 +1,6 @@
+{
+    "points": [
+        {"year": 2003, "type": "trapped ion", "err": 0.65, "connectivity": 1, "qubits": 2},
+        {"year": 2005, "type": "trapped ion", "err": 0.65, "connectivity": 1, "qubits": 5}
+    ]
+}
