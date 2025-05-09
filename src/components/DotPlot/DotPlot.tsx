@@ -3,10 +3,11 @@ import { scaleLog } from "@visx/scale";
 import { motion, AnimatePresence } from "framer-motion";
 import { min, max } from "d3-array";
 import Legend from "./Legend";
-import AnimatedAxis from "./AnimatedAxis";
 import VerticalTimeline from "../VerticalTimeline";
 import AnimatedYAxis from "./AnimatedYAxis";
 import AnimatedXAxis from "./AnimatedXAxis";
+import { useEffect, useState } from "react";
+import Overlay from "./Overlay";
 
 type Point = {
     year: number;
@@ -16,12 +17,30 @@ type Point = {
     qubits: number;
 };
 
-export default function DotPlot({ points, currentIdx }: { points: Point[], currentIdx: number }) {
-    const width = 600;
-    const height = 600;
+export default function DotPlot({ points, currentIdx, allYears }: { points: Point[], currentIdx: number, allYears: number[] }) {
+    const [dimensions, setDimensions] = useState({
+        width: window.innerWidth * 0.6,
+        height: window.innerHeight * 0.8,
+    });
+
+    useEffect(() => {
+        function handleResize() {
+            setDimensions({
+                width: window.innerWidth * 0.6,
+                height: window.innerHeight * 0.8,
+            });
+        }
+
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    const width = dimensions.width;
+    // const height = dimensions.height;
+    const height = dimensions.width * 0.5;
     // const margin = 100;
-    const xmargin = 75;
-    const ymargin = 75;
+    const xmargin = width * 0.1;
+    const ymargin = height * 0.2;
 
     // Determine min/max for log scales, clamp to safe log range (>= 1 or > 0)
     const minQubits = Math.max(1, min(points, p => p.qubits) ?? 1);
@@ -29,6 +48,10 @@ export default function DotPlot({ points, currentIdx }: { points: Point[], curre
 
     const minErr = Math.max(1e-6, min(points, p => p.err) ?? 1e-3);
     const maxErr = Math.min(1, max(points, p => p.err) ?? 1);
+
+    const baseFontSize = width / 40;       // for title
+    const subtitleFontSize = width / 55;   // for subtitle
+    const labelFontSize = width / 60;      // for point labels
 
     const xScale = scaleLog({
         domain: [1, Math.pow(10, Math.ceil(Math.log10(maxQubits)))],
@@ -46,15 +69,20 @@ export default function DotPlot({ points, currentIdx }: { points: Point[], curre
     });
 
     return (
-        <svg width={width} height={height} style={{
+        <motion.svg width={width} height={height} style={{
             position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
             background: 'white', zIndex: 10, boxShadow: '0 0 8px rgba(0,0,0,0.2)'
-        }}>
+        }}
+        animate={{
+            // width: currentIdx === 1 || currentIdx === 4 ? width*0.8 : width,
+            left: currentIdx === 2 ? '40%' : currentIdx === 4 ? '60%' : '50%',
+        }}
+        transition={{duration: 0.6}}>
             <text
                 x={width / 2}
                 y={30}
                 textAnchor="middle"
-                fontSize={18}
+                fontSize={baseFontSize}
                 fontWeight="bold"
             >
                 {/* Quantum Hardware Performance Over Time */}
@@ -64,7 +92,7 @@ export default function DotPlot({ points, currentIdx }: { points: Point[], curre
                 x={width / 2}
                 y={50}
                 textAnchor="middle"
-                fontSize={14}
+                fontSize={subtitleFontSize}
                 fill="#666"
             >
                 Qubits vs Error Rate by Technology Type
@@ -136,7 +164,7 @@ export default function DotPlot({ points, currentIdx }: { points: Point[], curre
                                 animate={{ x: cx, y: cy - size - 5 }}
                                 transition={{ duration: 0.6 }}
                                 textAnchor="middle"
-                                fontSize={12}
+                                fontSize={labelFontSize}
                             >
                                 {p.year}
                             </motion.text>
@@ -146,13 +174,15 @@ export default function DotPlot({ points, currentIdx }: { points: Point[], curre
                     })}
 
                     <VerticalTimeline
-                        years={points.map(p => p.year)}
+                        years={allYears}
                         currentIndex={currentIdx}
                         height={height}
                         graphRight={width - xmargin}
                     />
+
+                    {/* <Overlay xScale={xScale} yScale={yScale} width={width} height={height}/> */}
                 </AnimatePresence>
             </Group>
-        </svg >
+        </motion.svg>
     );
 }

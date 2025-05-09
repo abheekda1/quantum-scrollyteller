@@ -1,12 +1,13 @@
+import ParticlesBackground from "./components/Background";
 import Scrollyteller from "./components/Scrollyteller";
 
 function App() {
-  // return (
-  //   <main>
-  //     <Timeline />
-  //   </main>
-  // );
-  return <Scrollyteller />
+  return (
+    <>
+      {/* <ParticlesBackground /> */}
+      <Scrollyteller />
+    </>
+  )
 }
 
 export default App;

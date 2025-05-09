@@ -9,6 +9,7 @@ type Point = {
     err: number;
     connectivity: number;
     qubits: number;
+    info?: string;
 };
 
 export default function Scrollyteller() {
@@ -62,7 +63,7 @@ export default function Scrollyteller() {
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.8 }}
                 >
-                    <DotPlot points={visibleData} currentIdx={currentIndex} />
+                    <DotPlot points={visibleData} currentIdx={currentIndex} allYears={data.map(p => p.year)} />
                 </motion.div>
             )}
 
@@ -122,7 +123,28 @@ export default function Scrollyteller() {
                         padding: "1rem"
                     }}
                 >
-                    {point.year}
+                    <div>
+                        <div style={{ fontSize: "2rem", fontWeight: "bold" }}>{point.year}</div>
+                        {point.info && (
+                            <motion.div
+                                initial={{ opacity: 0, x: 30 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 0.6 }}
+                                style={{
+                                    marginTop: "0.5rem",
+                                    fontSize: "1.2rem",
+                                    maxWidth: "60ch",
+                                    color: "#444",
+                                    background: "#f4f4f4",
+                                    padding: "1rem",
+                                    borderRadius: "0.5rem",
+                                    boxShadow: "0 2px 6px rgba(0,0,0,0.1)"
+                                }}
+                            >
+                                {point.info}
+                            </motion.div>
+                        )}
+                    </div>
                 </div>
             ))}
 

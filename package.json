@@ -15,7 +15,9 @@
     "framer-motion": "^12.10.4",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "scrollama": "^3.2.0"
+    "react-tsparticles": "^2.12.2",
+    "scrollama": "^3.2.0",
+    "tsparticles": "^3.8.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
