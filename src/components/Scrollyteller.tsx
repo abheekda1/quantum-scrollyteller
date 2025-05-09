@@ -14,8 +14,9 @@ type Point = {
 };
 
 const introParagraphs = [
-    "Quantum computers promise exponential speedups for certain problems classical computers can't efficiently solve.",
-    "Different hardware platforms are competing to scale up qubit counts while minimizing error rates."
+  "Quantum computers today are in their infancy—bulky, expensive, and error-prone—much like classical computers were in the 1950s.",
+  "Despite current limitations, researchers and companies around the world are rapidly advancing hardware, software, and theory to scale up quantum computing power.",
+  "We are now entering a pivotal era where small quantum devices are capable of real computation, unlocking new possibilities in simulation, optimization, and beyond."
 ];
 
 export default function Scrollyteller() {
