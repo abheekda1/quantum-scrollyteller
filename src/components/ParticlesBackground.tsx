@@ -23,7 +23,7 @@ export default function ParticlesBackground() {
             animation: { enable: true, speed: 1, minimumValue: 0.1, sync: false }
           },
           size: {
-            value: { min: 1, max: 2 },
+            value: { min: 2, max: 3 },
             animation: { enable: true, speed: 2, minimumValue: 0.5, sync: false }
           },
           move: { enable: true, speed: 0.5 },

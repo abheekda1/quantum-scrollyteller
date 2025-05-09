@@ -72,7 +72,7 @@ export default function DotPlot({ points, currentIdx, allYears }: { points: Poin
     return (
         <motion.svg width={width} height={height} style={{
             position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-            background: 'white', zIndex: 10, boxShadow: '0 0 8px rgba(0,0,0,0.2)'
+            background: 'white', zIndex: 10, boxShadow: '0 0 8px rgba(0,0,0,0.2)', borderRadius: '1em'
         }}
         animate={{
             // width: currentIdx === 1 || currentIdx === 4 ? width*0.8 : width,
