@@ -1,4 +1,4 @@
-import Timeline from "./components/Timeline";
+import Scrollyteller from "./components/Scrollyteller";
 
 function App() {
   // return (
@@ -6,7 +6,7 @@ function App() {
   //     <Timeline />
   //   </main>
   // );
-  return <Timeline />
+  return <Scrollyteller />
 }
 
 export default App;
