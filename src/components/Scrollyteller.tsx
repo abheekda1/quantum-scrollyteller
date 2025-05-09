@@ -18,14 +18,14 @@ export default function Scrollyteller() {
     const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
     const scrollerRef = useRef<ReturnType<typeof scrollama> | null>(null);
 
-    // Load data.json
+    // Load data
     useEffect(() => {
         fetch("/data.json")
             .then(res => res.json())
             .then(json => setData(json.points));
     }, []);
 
-    // Set up Scrollama once data is loaded
+    // Setup scrollama
     useEffect(() => {
         if (data.length === 0) return;
 
@@ -48,7 +48,7 @@ export default function Scrollyteller() {
         };
     }, [data]);
 
-    // Determine visible graph data
+    // Slice data for progressive reveal
     const visibleData =
         currentIndex > 0 && currentIndex <= data.length
             ? data.slice(0, currentIndex)
@@ -56,27 +56,21 @@ export default function Scrollyteller() {
 
     return (
         <>
-            {/* === DOT PLOT === */}
-            {visibleData.length > 0 && (
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.8 }}
-                >
-                    <DotPlot points={visibleData} currentIdx={currentIndex} allYears={data.map(p => p.year)} />
-                </motion.div>
-            )}
-
-            {/* === VERTICAL TIMELINE === */}
-            {/* {data.length > 0 && (
-                <VerticalTimeline
-                    years={data.map(d => d.year)}
-                    currentIndex={currentIndex}
-                    top={0}
-                    right={0}
-                />
-            )} */}
-
+            {/* === DotPlot Fade Container === */}
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: currentIndex <= data.length ? 1 : 0 }}
+                transition={{ duration: 0.8 }}
+                style={{ pointerEvents: "none", zIndex: 0 }}
+            >
+                {currentIndex > 0 && (
+                    <DotPlot
+                        points={visibleData}
+                        currentIdx={currentIndex}
+                        allYears={data.map(p => p.year)}
+                    />
+                )}
+            </motion.div>
 
             {/* === INTRO STEP === */}
             <motion.div
@@ -108,7 +102,7 @@ export default function Scrollyteller() {
                 </motion.div>
             </motion.div>
 
-            {/* === YEAR STEPS === */}
+            {/* === DATA STEPS === */}
             {data.map((point, i) => (
                 <div
                     key={i + 1}
@@ -117,7 +111,7 @@ export default function Scrollyteller() {
                         height: "100vh",
                         display: "flex",
                         alignItems: "center",
-                        justifyContent: i & 1 ? "left" : "right",
+                        justifyContent: i % 2 === 0 ? "right" : "left",
                         fontSize: "2rem",
                         borderBottom: "1px solid #eee",
                         padding: "1rem"
