@@ -1,6 +1,21 @@
 {
-    "points": [
-        {"year": 2003, "type": "trapped ion", "err": 0.65, "connectivity": 1, "qubits": 2},
-        {"year": 2005, "type": "trapped ion", "err": 0.65, "connectivity": 1, "qubits": 5}
-    ]
+  "points": [
+    { "year": 2003, "type": "trapped ion",        "err": 0.1,   "connectivity": 1, "qubits": 2 },
+    { "year": 2005, "type": "trapped ion",        "err": 0.08,  "connectivity": 1, "qubits": 4 },
+    { "year": 2006, "type": "superconducting",    "err": 0.1,   "connectivity": 1, "qubits": 3 },
+    { "year": 2009, "type": "superconducting",    "err": 0.02,  "connectivity": 1, "qubits": 6 },
+    { "year": 2012, "type": "superconducting",    "err": 0.004, "connectivity": 1, "qubits": 9 },
+    { "year": 2014, "type": "superconducting",    "err": 0.002, "connectivity": 2, "qubits": 15 },
+    { "year": 2015, "type": "trapped ion",        "err": 0.0015,"connectivity": 2, "qubits": 10 },
+    { "year": 2016, "type": "superconducting",    "err": 0.01,  "connectivity": 1, "qubits": 5 },
+    { "year": 2018, "type": "trapped ion",        "err": 0.005, "connectivity": 2, "qubits": 8 },
+    { "year": 2019, "type": "superconducting",    "err": 0.005, "connectivity": 2, "qubits": 27 },
+    { "year": 2019, "type": "trapped ion",        "err": 0.003, "connectivity": 2, "qubits": 12 },
+    { "year": 2020, "type": "superconducting",    "err": 0.003, "connectivity": 2, "qubits": 53 },
+    { "year": 2020, "type": "trapped ion",        "err": 0.001, "connectivity": 3, "qubits": 24 },
+    { "year": 2022, "type": "superconducting",    "err": 0.001, "connectivity": 3, "qubits": 127 },
+    { "year": 2023, "type": "trapped ion",        "err": 0.0009,"connectivity": 3, "qubits": 32 },
+    { "year": 2024, "type": "superconducting",    "err": 0.0008,"connectivity": 3, "qubits": 200 },
+    { "year": 2025, "type": "trapped ion",        "err": 0.0007,"connectivity": 3, "qubits": 40 }
+  ]
 }
