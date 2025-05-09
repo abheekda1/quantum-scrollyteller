@@ -11,13 +11,15 @@ An interactive timeline visualizing the evolution of quantum hardware technologi
 - **Scrollama** (ScrollMagic alternative)
 - **Bun**
 
-## 🛠️ Running Locally
+## Running Locally
 
 1. **Install Bun** if not already installed:  
    https://bun.sh
 
 2. **Clone and install dependencies**:
    ```bash
+   git clone https://github.com/abheekda1/quantum-scrollyteller
+   cd quantum-scrollyteller
    bun install
    ```
 
