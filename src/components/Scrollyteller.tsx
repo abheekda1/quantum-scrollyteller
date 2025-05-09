@@ -46,6 +46,7 @@ export default function Scrollyteller() {
         scrollerRef.current = scroller;
 
         scroller
+        // @ts-ignore
             .setup({ step: steps, offset: 0.5 })
             .onStepEnter(response => setCurrentIndex(response.index));
 
@@ -61,7 +62,7 @@ export default function Scrollyteller() {
             ? data.slice(0, currentIndex - introParagraphs.length)
             : [];
 
-    const isInNonGraphSection = currentIndex <= introParagraphs.length || currentIndex === data.length + introParagraphs.length + 1;
+    // const isInNonGraphSection = currentIndex <= introParagraphs.length || currentIndex === data.length + introParagraphs.length + 1;
 
     return (
         <>
@@ -86,6 +87,7 @@ export default function Scrollyteller() {
             {/* === Intro Title === */}
             <motion.div
                 className="step"
+                // @ts-ignore
                 ref={el => (stepRefs.current[0] = el)}
                 style={{
                     height: "100vh",
@@ -118,6 +120,7 @@ export default function Scrollyteller() {
                 <motion.div
                     className="step"
                     key={`para-${i}`}
+                    // @ts-ignore
                     ref={el => (stepRefs.current[i + 1] = el)}
                     style={{
                         height: "100vh",
@@ -149,6 +152,7 @@ export default function Scrollyteller() {
                 <div
                     className="step"
                     key={i + introParagraphs.length + 1}
+                    // @ts-ignore
                     ref={el => (stepRefs.current[i + introParagraphs.length + 1] = el)}
                     style={{
                         height: "100vh",

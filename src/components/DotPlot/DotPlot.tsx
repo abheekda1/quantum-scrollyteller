@@ -7,7 +7,6 @@ import VerticalTimeline from "../VerticalTimeline";
 import AnimatedYAxis from "./AnimatedYAxis";
 import AnimatedXAxis from "./AnimatedXAxis";
 import { useEffect, useState } from "react";
-import Overlay from "./Overlay";
 
 type Point = {
     year: number;
@@ -48,7 +47,7 @@ export default function DotPlot({ points, currentIdx, allYears }: { points: Poin
     const maxQubits = Math.max(minQubits * 1.1, max(points, p => p.qubits) ?? 10);
 
     const minErr = Math.max(1e-6, min(points, p => p.err) ?? 1e-3);
-    const maxErr = Math.min(1, max(points, p => p.err) ?? 1);
+    // const maxErr = Math.min(1, max(points, p => p.err) ?? 1);
 
     const baseFontSize = width / 40;       // for title
     const subtitleFontSize = width / 55;   // for subtitle

@@ -15,12 +15,11 @@ type Props = {
 export default function AnimatedYAxis({
   scale,
   x,
-  height,
   label,
   tickFormat = (d) => `${d}`,
   tickSize = 6,
 }: Props) {
-  const ticks = scale.ticks().filter(t => Number.isFinite(t));
+  const ticks = scale.ticks().filter((t: number) => Number.isFinite(t));
 
   return (
     <Group left={x}>
@@ -31,7 +30,7 @@ export default function AnimatedYAxis({
         x2={0}
         stroke="#333"
       />
-      {ticks.map((tick, i) => {
+      {ticks.map((tick: number, i: number) => {
         const pos = scale(tick);
         return (
           <motion.g key={i} animate={{ y: pos }} initial={false} transition={{ duration: 0.6 }}>

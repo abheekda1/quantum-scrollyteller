@@ -5,12 +5,14 @@ import type { Engine } from "@tsparticles/engine";
 
 export default function ParticlesBackground() {
   const init = useCallback(async (engine: Engine) => {
+    // @ts-ignore
     await loadSlim(engine);
   }, []);
 
   return (
     <Particles
       id="tsparticles"
+      // @ts-ignore
       init={init}
       options={{
         fullScreen: { enable: true, zIndex: -1 },
