@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import scrollama from "scrollama";
 import { motion } from "framer-motion";
 import DotPlot from "./DotPlot/DotPlot";
+import ParticlesBackground from "./ParticlesBackground";
 
 type Point = {
     year: number;
@@ -12,6 +13,11 @@ type Point = {
     info?: string;
 };
 
+const introParagraphs = [
+    "Quantum computers promise exponential speedups for certain problems classical computers can't efficiently solve.",
+    "Different hardware platforms are competing to scale up qubit counts while minimizing error rates."
+];
+
 export default function Scrollyteller() {
     const [data, setData] = useState<Point[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -19,21 +25,18 @@ export default function Scrollyteller() {
     const outroRef = useRef<HTMLDivElement | null>(null);
     const scrollerRef = useRef<ReturnType<typeof scrollama> | null>(null);
 
-    // Load data
     useEffect(() => {
         fetch("/data.json")
             .then(res => res.json())
             .then(json => setData(json.points));
     }, []);
 
-    // Assign outro ref
     useEffect(() => {
         if (data.length > 0 && outroRef.current) {
-            stepRefs.current[data.length + 1] = outroRef.current;
+            stepRefs.current[data.length + introParagraphs.length + 1] = outroRef.current;
         }
     }, [data]);
 
-    // Setup scrollama
     useEffect(() => {
         if (data.length === 0) return;
 
@@ -42,13 +45,8 @@ export default function Scrollyteller() {
         scrollerRef.current = scroller;
 
         scroller
-            .setup({
-                step: steps,
-                offset: 0.5,
-            })
-            .onStepEnter(response => {
-                setCurrentIndex(response.index);
-            });
+            .setup({ step: steps, offset: 0.5 })
+            .onStepEnter(response => setCurrentIndex(response.index));
 
         return () => {
             scrollerRef.current?.destroy();
@@ -57,29 +55,34 @@ export default function Scrollyteller() {
     }, [data]);
 
     const visibleData =
-        currentIndex > 0 && currentIndex <= data.length
-            ? data.slice(0, currentIndex)
+        currentIndex > introParagraphs.length &&
+            currentIndex <= data.length + introParagraphs.length
+            ? data.slice(0, currentIndex - introParagraphs.length)
             : [];
+
+    const isInNonGraphSection = currentIndex <= introParagraphs.length || currentIndex === data.length + introParagraphs.length + 1;
 
     return (
         <>
-            {/* === DotPlot Fade Container === */}
+        {/* {isInNonGraphSection && <ParticlesBackground />} */}
+        <ParticlesBackground />
+            {/* === DotPlot === */}
             <motion.div
                 initial={{ opacity: 0 }}
-                animate={{ opacity: currentIndex <= data.length ? 1 : 0 }}
+                animate={{ opacity: currentIndex <= data.length + introParagraphs.length ? 1 : 0 }}
                 transition={{ duration: 0.8 }}
                 style={{ pointerEvents: "none", zIndex: 0 }}
             >
-                {currentIndex > 0 && (
+                {currentIndex > introParagraphs.length && (
                     <DotPlot
                         points={visibleData}
-                        currentIdx={currentIndex}
+                        currentIdx={currentIndex - introParagraphs.length}
                         allYears={data.map(p => p.year)}
                     />
                 )}
             </motion.div>
 
-            {/* === INTRO STEP === */}
+            {/* === Intro Title === */}
             <motion.div
                 className="step"
                 ref={el => (stepRefs.current[0] = el)}
@@ -90,7 +93,6 @@ export default function Scrollyteller() {
                     justifyContent: "center",
                     position: "relative",
                     zIndex: 1,
-                    overflow: "hidden",
                 }}
             >
                 <motion.div
@@ -110,20 +112,51 @@ export default function Scrollyteller() {
                 </motion.div>
             </motion.div>
 
-            {/* === YEAR STEPS === */}
+            {/* === Fading Paragraphs === */}
+            {introParagraphs.map((text, i) => (
+                <motion.div
+                    className="step"
+                    key={`para-${i}`}
+                    ref={el => (stepRefs.current[i + 1] = el)}
+                    style={{
+                        height: "100vh",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        padding: "2rem",
+                        fontSize: "1.5rem",
+                        textAlign: "center",
+                        color: "#444",
+                    }}
+                >
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{
+                            opacity: currentIndex === i + 1 ? 1 : 0,
+                            y: currentIndex === i + 1 ? 0 : -20,
+                        }}
+                        transition={{ duration: 0.6 }}
+                        style={{ maxWidth: "60ch" }}
+                    >
+                        {text}
+                    </motion.div>
+                </motion.div>
+            ))}
+
+            {/* === Year Steps === */}
             {data.map((point, i) => (
                 <div
                     className="step"
-                    key={i + 1}
-                    ref={el => (stepRefs.current[i + 1] = el)}
+                    key={i + introParagraphs.length + 1}
+                    ref={el => (stepRefs.current[i + introParagraphs.length + 1] = el)}
                     style={{
                         height: "100vh",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: i % 2 === 0 ? "right" : "left",
                         fontSize: "2rem",
-                        borderBottom: "1px solid #eee",
-                        padding: "1rem"
+                        // borderBottom: "1px solid #eee",
+                        padding: "1rem",
                     }}
                 >
                     <div>
@@ -141,7 +174,7 @@ export default function Scrollyteller() {
                                     background: "#f4f4f4",
                                     padding: "1rem",
                                     borderRadius: "0.5rem",
-                                    boxShadow: "0 2px 6px rgba(0,0,0,0.1)"
+                                    boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
                                 }}
                             >
                                 {point.info}
@@ -151,7 +184,7 @@ export default function Scrollyteller() {
                 </div>
             ))}
 
-            {/* === OUTRO STEP === */}
+            {/* === Outro Step === */}
             <motion.div
                 className="step"
                 ref={outroRef}
@@ -167,9 +200,9 @@ export default function Scrollyteller() {
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95, y: 40 }}
                     animate={{
-                        opacity: currentIndex === data.length + 1 ? 1 : 0,
-                        scale: currentIndex === data.length + 1 ? 1 : 1.02,
-                        y: currentIndex === data.length + 1 ? 0 : -20,
+                        opacity: currentIndex === data.length + introParagraphs.length + 1 ? 1 : 0,
+                        scale: currentIndex === data.length + introParagraphs.length + 1 ? 1 : 1.02,
+                        y: currentIndex === data.length + introParagraphs.length + 1 ? 0 : -20,
                     }}
                     transition={{ duration: 0.8 }}
                     style={{ textAlign: "center" }}

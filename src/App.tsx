@@ -1,4 +1,3 @@
-import ParticlesBackground from "./components/Background";
 import Scrollyteller from "./components/Scrollyteller";
 
 function App() {
