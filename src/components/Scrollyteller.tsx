@@ -136,7 +136,7 @@ export default function Scrollyteller() {
                                 style={{
                                     marginTop: "0.5rem",
                                     fontSize: "1.2rem",
-                                    maxWidth: "60ch",
+                                    maxWidth: "30ch",
                                     color: "#444",
                                     background: "#f4f4f4",
                                     padding: "1rem",
@@ -176,7 +176,7 @@ export default function Scrollyteller() {
                 >
                     <div style={{ fontSize: "2.5rem", fontWeight: "bold" }}>Looking Ahead</div>
                     <div style={{ fontSize: "1.3rem", marginTop: "0.5rem", color: "#666" }}>
-                        The future of quantum hardware is just beginning.
+                        Shor's Algo, Grover's Algo, Quantum Simulation, Quantum Optimizations
                     </div>
                 </motion.div>
             </motion.div>

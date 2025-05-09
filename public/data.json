@@ -1,9 +1,9 @@
 {
   "points": [
-    { "year": 2003, "type": "trapped ion",        "err": 0.1,   "connectivity": 1, "qubits": 2, "info": "info abt trapped ion" },
+    { "year": 2003, "type": "trapped ion",        "err": 0.1,   "connectivity": 1, "qubits": 2, "info": "Trapped ion quantum computers use electrically charged atoms suspended in electromagnetic fields, where quantum operations are performed using laser pulses." },
     { "year": 2005, "type": "trapped ion",        "err": 0.08,  "connectivity": 1, "qubits": 4 },
     { "year": 2006, "type": "superconducting",    "err": 0.1,   "connectivity": 1, "qubits": 3 },
-    { "year": 2009, "type": "superconducting",    "err": 0.02,  "connectivity": 1, "qubits": 6, "info": "info abt superconducting" },
+    { "year": 2009, "type": "superconducting",    "err": 0.02,  "connectivity": 1, "qubits": 6, "info": " Superconducting quantum computers use tiny circuits made from superconducting materials that behave like artificial atoms and are manipulated using microwave signals." },
     { "year": 2012, "type": "superconducting",    "err": 0.004, "connectivity": 1, "qubits": 9 },
     { "year": 2014, "type": "superconducting",    "err": 0.002, "connectivity": 2, "qubits": 15 },
     { "year": 2015, "type": "trapped ion",        "err": 0.0015,"connectivity": 2, "qubits": 10 },
