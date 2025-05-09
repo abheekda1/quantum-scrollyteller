@@ -1,9 +1,12 @@
 import { Group } from "@visx/group";
 import { scaleLog } from "@visx/scale";
-import { AxisBottom, AxisLeft } from "@visx/axis";
 import { motion, AnimatePresence } from "framer-motion";
 import { min, max } from "d3-array";
 import Legend from "./Legend";
+import AnimatedAxis from "./AnimatedAxis";
+import VerticalTimeline from "../VerticalTimeline";
+import AnimatedYAxis from "./AnimatedYAxis";
+import AnimatedXAxis from "./AnimatedXAxis";
 
 type Point = {
     year: number;
@@ -13,16 +16,7 @@ type Point = {
     qubits: number;
 };
 
-function toSuperscript(n: number): string {
-    const superscripts = {
-        "-": "⁻",
-        "0": "⁰", "1": "¹", "2": "²", "3": "³", "4": "⁴",
-        "5": "⁵", "6": "⁶", "7": "⁷", "8": "⁸", "9": "⁹"
-    };
-    return String(n).split("").map(c => superscripts[c as keyof typeof superscripts] || "").join("");
-}
-
-export default function DotPlot({ points }: { points: Point[] }) {
+export default function DotPlot({ points, currentIdx }: { points: Point[], currentIdx: number }) {
     const width = 600;
     const height = 600;
     // const margin = 100;
@@ -76,23 +70,23 @@ export default function DotPlot({ points }: { points: Point[] }) {
                 Qubits vs Error Rate by Technology Type
             </text>
             <Group>
-                <AxisBottom
-                    top={height - ymargin}
+                <AnimatedXAxis
                     scale={xScale}
+                    y={height - ymargin}
+                    width={width}
                     label="Number of physical qubits"
-                    labelOffset={20}
                     tickFormat={(d) => Number.isInteger(Math.log10(d)) ? `10^${Math.log10(d)}` : ''}
                 />
 
-                <AxisLeft
-                    left={xmargin}
+                <AnimatedYAxis
                     scale={yScale}
+                    x={xmargin}
+                    height={height}
                     label="Average two-qubit gate error rate"
-                    labelOffset={40}
                     tickFormat={(d) => Number.isInteger(Math.log10(d)) ? `10^${Math.log10(d)}` : ''}
                 />
 
-                <Legend x={width - 160} y={ymargin} />
+                <Legend x={xmargin} y={ymargin} />
 
                 <AnimatePresence>
                     {points.map((p) => {
@@ -108,7 +102,12 @@ export default function DotPlot({ points }: { points: Point[] }) {
                             transition={{ duration: 0.4 }}
                         >
                             {p.type === "trapped ion" ? (
-                                <circle
+                                <motion.circle
+                                    animate={{
+                                        cx: cx,
+                                        cy: cy,
+                                    }}
+                                    transition={{ duration: 0.6 }}
                                     cx={cx}
                                     cy={cy}
                                     r={size}
@@ -119,9 +118,10 @@ export default function DotPlot({ points }: { points: Point[] }) {
                                     strokeOpacity={0.9}
                                 />
                             ) : (
-                                <rect
-                                    x={cx - size}
-                                    y={cy - size}
+                                <motion.rect
+                                    initial={{ x: cx - size, y: cy - size }}
+                                    animate={{ x: cx - size, y: cy - size }}
+                                    transition={{ duration: 0.6 }}
                                     width={size * 2}
                                     height={size * 2}
                                     fill={color}
@@ -131,18 +131,28 @@ export default function DotPlot({ points }: { points: Point[] }) {
                                     strokeOpacity={0.9}
                                 />
                             )}
-                            <text
-                                x={xScale(p.qubits)}
-                                y={yScale(p.err) - 15}
+                            <motion.text
+                                initial={{ x: cx, y: cy - size - 5 }}
+                                animate={{ x: cx, y: cy - size - 5 }}
+                                transition={{ duration: 0.6 }}
                                 textAnchor="middle"
                                 fontSize={12}
                             >
                                 {p.year}
-                            </text>
+                            </motion.text>
+
+
                         </motion.g>
                     })}
+
+                    <VerticalTimeline
+                        years={points.map(p => p.year)}
+                        currentIndex={currentIdx}
+                        height={height}
+                        graphRight={width - xmargin}
+                    />
                 </AnimatePresence>
             </Group>
-        </svg>
+        </svg >
     );
 }

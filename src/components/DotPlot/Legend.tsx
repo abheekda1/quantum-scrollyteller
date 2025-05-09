@@ -9,7 +9,7 @@ export default function Legend({ x, y }: LegendProps) {
 
   return (
     <g transform={`translate(${x}, ${y})`}>
-      <rect width="130" height="50" fill="white" stroke="#ccc" rx="6" ry="6" />
+      {/* <rect width="130" height="50" fill="white" stroke="#ccc" rx="6" ry="6" /> */}
 
       {/* Superconducting */}
       <rect

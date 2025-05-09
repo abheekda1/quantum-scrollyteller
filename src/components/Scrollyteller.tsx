@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import scrollama from "scrollama";
-import { motion, AnimatePresence } from "framer-motion";
-import DotPlot from "./DotPlot";
+import { motion } from "framer-motion";
+import DotPlot from "./DotPlot/DotPlot";
 
 type Point = {
     year: number;
@@ -11,7 +11,7 @@ type Point = {
     qubits: number;
 };
 
-export default function Timeline() {
+export default function Scrollyteller() {
     const [data, setData] = useState<Point[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -62,10 +62,20 @@ export default function Timeline() {
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.8 }}
                 >
-                    <DotPlot points={visibleData} />
+                    <DotPlot points={visibleData} currentIdx={currentIndex} />
                 </motion.div>
             )}
-            {/* <DotPlot points={visibleData} /> */}
+
+            {/* === VERTICAL TIMELINE === */}
+            {/* {data.length > 0 && (
+                <VerticalTimeline
+                    years={data.map(d => d.year)}
+                    currentIndex={currentIndex}
+                    top={0}
+                    right={0}
+                />
+            )} */}
+
 
             {/* === INTRO STEP === */}
             <motion.div
