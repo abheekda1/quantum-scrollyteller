@@ -16,6 +16,7 @@ export default function Scrollyteller() {
     const [data, setData] = useState<Point[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const outroRef = useRef<HTMLDivElement | null>(null);
     const scrollerRef = useRef<ReturnType<typeof scrollama> | null>(null);
 
     // Load data
@@ -24,6 +25,13 @@ export default function Scrollyteller() {
             .then(res => res.json())
             .then(json => setData(json.points));
     }, []);
+
+    // Assign outro ref
+    useEffect(() => {
+        if (data.length > 0 && outroRef.current) {
+            stepRefs.current[data.length + 1] = outroRef.current;
+        }
+    }, [data]);
 
     // Setup scrollama
     useEffect(() => {
@@ -48,7 +56,6 @@ export default function Scrollyteller() {
         };
     }, [data]);
 
-    // Slice data for progressive reveal
     const visibleData =
         currentIndex > 0 && currentIndex <= data.length
             ? data.slice(0, currentIndex)
@@ -74,6 +81,7 @@ export default function Scrollyteller() {
 
             {/* === INTRO STEP === */}
             <motion.div
+                className="step"
                 ref={el => (stepRefs.current[0] = el)}
                 style={{
                     height: "100vh",
@@ -102,9 +110,10 @@ export default function Scrollyteller() {
                 </motion.div>
             </motion.div>
 
-            {/* === DATA STEPS === */}
+            {/* === YEAR STEPS === */}
             {data.map((point, i) => (
                 <div
+                    className="step"
                     key={i + 1}
                     ref={el => (stepRefs.current[i + 1] = el)}
                     style={{
@@ -144,7 +153,8 @@ export default function Scrollyteller() {
 
             {/* === OUTRO STEP === */}
             <motion.div
-                ref={el => (stepRefs.current[data.length + 1] = el)}
+                className="step"
+                ref={outroRef}
                 style={{
                     height: "100vh",
                     display: "flex",

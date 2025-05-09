@@ -77,7 +77,7 @@ export default function DotPlot({ points, currentIdx, allYears }: { points: Poin
         animate={{
             // width: currentIdx === 1 || currentIdx === 4 ? width*0.8 : width,
             // left: currentIdx === 2 ? '40%' : currentIdx === 4 ? '60%' : '50%',
-            left: points[points.length-1].info ? currentIdx % 2 == 0 ? '60%' : '40%' : '50%'
+            left: points.length > 0 && points[points.length-1].info ? currentIdx % 2 == 0 ? '60%' : '40%' : '50%'
             // opacity: currentIdx <= allYears.length - 1 ? 1 : 0
         }}
         transition={{duration: 0.6}}>
